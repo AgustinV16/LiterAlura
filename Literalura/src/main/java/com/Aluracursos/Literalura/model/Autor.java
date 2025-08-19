@@ -19,10 +19,8 @@ public class Autor {
     private Integer anoNacimiento;
     private Integer anoFallecimiento;
 
-    // IMPORTANTE Constructor vacio (obligatorio para JPA)
     public Autor() {}
 
-    // Constructor desde datos de la API
     public Autor(String nombre, Integer anoNacimiento, Integer anoFallecimiento) {
         this.nombre = nombre;
         this.anoNacimiento = anoNacimiento;

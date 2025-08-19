@@ -24,10 +24,9 @@ public class Libro {
     )
     private List<Autor> autores;
 
-    // IMPORTANTE Constructor vacío (obligatorio para JPA)
     public Libro() {}
 
-    // Constructor para crear libros desde los datos de la API
+
     public Libro(String titulo, String idioma, Integer descargas) {
         this.titulo = titulo;
         this.idioma = idioma;
@@ -73,9 +72,6 @@ public class Libro {
     public void setAutores(List<Autor> autores) {
         this.autores = autores;
     }
-
-    // Metodo para mostrar información básica
-    // En la clase Libro.java
     @Override
     public String toString() {
         String nombresAutores = autores.stream()

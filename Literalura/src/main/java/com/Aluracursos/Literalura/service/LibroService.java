@@ -22,7 +22,7 @@ public class LibroService {
     private final AutorRepository autorRepository;
     private final ObjectMapper objectMapper = new ObjectMapper(); // Puedes instanciarlo aquí
 
-    // Constructor para la inyección de dependencias
+
     public LibroService(ConsultaApi consultaApi, LibroRepository libroRepository, AutorRepository autorRepository) {
         this.consultaApi = consultaApi;
         this.libroRepository = libroRepository;
@@ -31,14 +31,14 @@ public class LibroService {
 
     @Transactional
     public void buscarYGuardarLibro(String titulo) {
-        //  Verificar si el libro ya existe en la BD
+      
         Optional<Libro> libroExistente = libroRepository.findByTituloContainsIgnoreCase(titulo);
         if (libroExistente.isPresent()) {
             System.out.println("El libro ya existe en la base de datos.");
             return;
         }
 
-        // Si no existe, buscar en la API
+    
         String json = consultaApi.buscarLibroPorTitulo(titulo);
         try {
             LibroData libroData = objectMapper.readValue(json, LibroData.class);
@@ -57,21 +57,20 @@ public class LibroService {
     }
 
     private void guardarLibroConAutores(Result result) {
-        // Mapear autores, buscándolos en la BD o creando nuevos
+    
         List<Autor> autores = result.authors().stream()
                 .map(autorData -> {
-                    // 1. Busca si el autor ya existe
+               
                     Optional<Autor> autorExistente = autorRepository.findByNombre(autorData.name());
 
-                    // 2. Si existe, lo retorna; si no, ejecuta el código para crear y guardar uno nuevo.
+            
                     return autorExistente.orElseGet(() -> {
                         Autor autorNuevo = new Autor(autorData.name(), autorData.birth_year(), autorData.death_year());
                         return autorRepository.save(autorNuevo);
                     });
                 })
                 .collect(Collectors.toList());
-        //  Crear el objeto Libro
-        // Corrección para evitar error si la lista de idiomas está vacía
+
         String idioma = result.languages().isEmpty() ? "Desconocido" : result.languages().get(0);
 
         Libro libro = new Libro(
@@ -80,10 +79,10 @@ public class LibroService {
                 result.download_count()
         );
 
-        //  Asociar autores con el libro
+       
         libro.setAutores(autores);
 
-        // 8. Guardar el libro (gracias a la cascada, los autores se asociarán correctamente)
+      
         libroRepository.save(libro);
         System.out.println("Libro guardado exitosamente: " + libro.getTitulo());
     }
@@ -95,7 +94,7 @@ public class LibroService {
             System.out.println("No hay libros registrados.");
             return;
         }
-        libros.forEach(System.out::println); //Reciclando el toString() de la clase Libro.java
+        libros.forEach(System.out::println); 
     }
 
     @Transactional(readOnly = true)
@@ -105,9 +104,7 @@ public class LibroService {
             System.out.println("No hay autores registrados.");
             return;
         }
-        autores.forEach(System.out::println); // Reciclando el toString() de la clase Autor.java
-    }
-
+        autores.forEach(System.out::println); 
     @Transactional(readOnly = true)
     public void listarLibrosPorIdioma(String idioma) {
         List<Libro> libros = libroRepository.findByIdioma(idioma);
@@ -115,7 +112,7 @@ public class LibroService {
             System.out.println("No se encontraron libros en el idioma '" + idioma + "'.");
         } else {
             System.out.println("Libros encontrados en '" + idioma + "':");
-            libros.forEach(System.out::println); // Reciclando el toString() de la clase Libro.java
+            libros.forEach(System.out::println); 
         }
     }
 
