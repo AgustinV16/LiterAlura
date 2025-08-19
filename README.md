@@ -81,14 +81,3 @@ mvn spring-boot:run
 ## API Externa
 
 Este proyecto consume datos de Gutendex, una API web para libros de dominio público del Proyecto Gutenberg.
-
-## Estructura del Proyecto
-
-El proyecto sigue una estructura estándar de Maven y Spring Boot, organizada por capas para facilitar la mantenibilidad:
-
-src/main/java/com/literalura/
-├── dto/              # Data Transfer Objects (DTOs)
-├── model/            # Entidades JPA (Libro, Autor) y records
-├── repository/       # Interfaces de acceso a datos con Spring Data JPA
-├── service/          # Lógica de negocio (API, repositorios, consultas)
-└── LiteraluraApplication.java  # Clase principal de arranque
